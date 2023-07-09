@@ -28,6 +28,46 @@
 - Init a git project : `git init` (convert a project to git managed)
 - add files: `git add .`
 - create a commit: `git commit -m "first commit"`
-- ` git branch -M main`
+- `git log`
+- `git branch -M main`
 - adding origin: `git remote add origin https://github.com/asutkarpeeyush/my_django_project.git`
 - pushing the code: `git push -u origin main`
+
+# HTTP Methods
+
+- URI (Person: /person/1)
+
+- GET /person/1/ (fetching an existing resource) /person/1/
+- POST /person/ (creating a new resource) /person/ -> id of the newly created person (10) -> GET /person/10/
+- PUT /person/1/ (overriding an existing resource completely)
+- PATCH /person/1/ (overriding partial details of an existing resource)
+
+POST /person/
+name: Piyush
+age: 29
+
+GET /person/10
+id: 10
+name: Piyush
+age: 29
+
+PUT /person/10/ {"name": "Ritesh", age: 23}
+id: 10
+name: Ritesh
+age: 23
+
+PUT /person/10/ {"name": "Ayush"}
+id: 10
+name: Ayush
+
+PATCH /person/10/ {"name": "Ritesh"}
+id: 10
+name: Ritesh
+age: 29
+
+# API contract (swagger)
+
+- FE and BE teams come to a consensus
+- POST /my_app/view_1000
+  - name: str
+  - age: int
