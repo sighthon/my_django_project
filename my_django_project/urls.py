@@ -21,8 +21,8 @@ from django.urls import path, include
 
 urlpatterns = [
     # TODO: URLResolver v/s URLPattern
-    path('admin/', admin.site.urls),
     path('my_app/', include("my_app.urls")),
+    path('admin/', admin.site.urls)
 ]
 
 # path('my_app/dumm_view', dummy_view)

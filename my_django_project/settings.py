@@ -56,7 +56,10 @@ ROOT_URLCONF = 'my_django_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 'DIRS': [
+        #     # "/my_app/templates"
+        #     BASE_DIR / 'my_app/templates'
+        # ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'my_app.context_processor.current_time'
             ],
         },
     },
@@ -76,10 +80,18 @@ WSGI_APPLICATION = 'my_django_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': 'details',
+       'USER': 'admin',
+       'PASSWORD': 'admin',
+       'HOST': 'localhost',
+       'PORT': '5432',
+   }
 }
 
 

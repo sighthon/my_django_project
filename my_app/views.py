@@ -1,8 +1,13 @@
-from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from django.utils.decorators import method_decorator
+from django.template import loader
+from django.template.loader import render_to_string
+from django.shortcuts import render
+from datetime import datetime
+from django.views.generic.base import TemplateView
+from django.views.decorators.http import require_http_methods
 
 
 books_content = [
@@ -20,19 +25,32 @@ books_content = [
 
 # This should be a get function in class based view.
 
+# class AboutUs(View):
+#     def get(self, request: HttpRequest, **kwargs: dict):
+#         return render(request, "my_app/about.html")
+    
+class AboutUs(TemplateView):
+    template_name = "my_app/about.html"
 
+# @csrf_exempt
+@require_http_methods(['GET', 'POST'])
 def my_view(request: HttpRequest, **kwargs: dict):
     # you got a (GET) request from frontend
     # TODO: you make a database call to get the details
 
     # prepare a webpage (html) with dynamic content from DB/memory
-    html_content = "<html><body>"
-    for content in books_content:
-        html_content += "<p>" + str(content) + "</p>"
-    html_content += "</body></html>"
-    # return that web page as a response
+    # html_content = "<html><body>"
+    # for content in books_content:
+    #     html_content += "<p>" + str(content) + "</p>"
+    # html_content += "</body></html>"
 
-    return HttpResponse(html_content)
+    # template = loader.get_template("my_app/view.html")
+    # rendered = render_to_string("my_app/view.html", {'content': books_content})
+
+    # return HttpResponse(template.render(request=request, context={'content': books_content}))
+    # return HttpResponse(rendered)
+    # current_time = datetime.now()
+    return render(request, "my_app/view.html", {'content': books_content})
 
 
 # class based views

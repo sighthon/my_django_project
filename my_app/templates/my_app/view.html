@@ -1,0 +1,21 @@
+<html>
+  <body>
+    <p>Hello World!</p>
+    {% comment %}
+    <ul>
+      {% for book_key, book in content.items %}
+      <li>{{ book }}</li>
+      {% endfor %}
+    </ul>
+    {% endcomment %}
+
+    <p>The type of request is {{ request.method }}</p>
+    <p>The current time is {{ current_time }}</p>
+
+    <ul>
+      {% for book in content %}
+      <li>{{ book }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
