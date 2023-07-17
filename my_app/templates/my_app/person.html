@@ -1,0 +1,23 @@
+<html>
+  <body>
+    <p>Person details!</p>
+    <p>The type of request is {{ request.method }}</p>
+    <p>The current time is {{ current_time }}</p>
+
+    <ul>
+      {% for person in person_data %}
+      <li>{{ person }}</li>
+      {% endfor %}
+    </ul>
+
+    <form action="/my_app/details" method="post">
+      <label for="name">Name:</label><br />
+      <input type="text" id="name" name="name" /><br />
+
+      <label for="age">Age:</label><br />
+      <input type="int" id="age" name="age" /><br />
+
+      <input type="submit" value="OK" />
+    </form>
+  </body>
+</html>

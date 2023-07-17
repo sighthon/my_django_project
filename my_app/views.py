@@ -8,6 +8,58 @@ from django.shortcuts import render
 from datetime import datetime
 from django.views.generic.base import TemplateView
 from django.views.decorators.http import require_http_methods
+from .models import Person
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class Details(View):
+    def http_method_not_allowed(self, request: HttpRequest, **kwargs: dict):
+        return HttpResponseNotAllowed("Allowed methods are : ['GET', 'POST']")
+
+    def get(self, request: HttpRequest, **kwargs: dict):
+        # get person details from DB
+        # people = Person.objects.all()
+
+        # Fetch person with the name provided in query param
+        query_params = request.GET
+        name = query_params.get("name", "")
+        people = Person.objects.filter(name=name)
+
+        # business logic on the data
+        data = []
+        for person in people:
+            # fetch contact details for the person
+            contacts = person.contact_set.all()
+            contact_details = []
+            for contact in contacts:
+                contact_details.append({
+                    'phone': contact.phone
+                })
+
+            data.append({
+                'name': person.name,
+                'age': person.age,
+                'address': person.address,
+                'contact': contact_details
+            })
+
+        # render the relevant template with the data
+        # return HttpResponse(data)
+        return render(request, "my_app/person.html", {'person_data': data})
+    
+    def post(self, request: HttpRequest, **kwargs: dict):
+        details = request.POST
+        name = details.get('name', '')
+        age = details.get('age', None)
+        person = Person.objects.get(name=name)
+
+        if not person:
+            return HttpResponse("The person doesn't exist")
+        
+        person.age = age
+        person.save()
+
+        return HttpResponse("Person details updated")
 
 
 books_content = [
