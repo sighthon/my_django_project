@@ -11,11 +11,12 @@
     </ul>
 
     <form action="/my_app/details" method="post">
-      <label for="name">Name:</label><br />
+      {% comment %} <label for="name">Name:</label><br />
       <input type="text" id="name" name="name" /><br />
 
       <label for="age">Age:</label><br />
       <input type="int" id="age" name="age" /><br />
+      {% endcomment %} {{ form }}
 
       <input type="submit" value="OK" />
     </form>

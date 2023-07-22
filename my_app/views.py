@@ -4,11 +4,12 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.template import loader
 from django.template.loader import render_to_string
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime
 from django.views.generic.base import TemplateView
 from django.views.decorators.http import require_http_methods
 from .models import Person
+from .forms import PersonUpdateForm
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -23,7 +24,10 @@ class Details(View):
         # Fetch person with the name provided in query param
         query_params = request.GET
         name = query_params.get("name", "")
-        people = Person.objects.filter(name=name)
+        if name:
+            people = Person.objects.filter(name=name)
+        else:
+            people = Person.objects.all()
 
         # business logic on the data
         data = []
@@ -45,21 +49,30 @@ class Details(View):
 
         # render the relevant template with the data
         # return HttpResponse(data)
-        return render(request, "my_app/person.html", {'person_data': data})
+        return render(request, "my_app/person.html", {'person_data': data, 'form': PersonUpdateForm()})
     
     def post(self, request: HttpRequest, **kwargs: dict):
-        details = request.POST
-        name = details.get('name', '')
-        age = details.get('age', None)
-        person = Person.objects.get(name=name)
+        # details = request.POST
+        # name = details.get('name', '')
+        # age = details.get('age', None)
+
+        form = PersonUpdateForm(request.POST)
+        print(request.POST)
+        if not form.is_valid():
+            print('Form details invalid')
+            return redirect('my_app_details')
+
+        # store details to DB
+        person = Person.objects.get(name=form.cleaned_data.get('name', ''))
 
         if not person:
             return HttpResponse("The person doesn't exist")
         
-        person.age = age
+        person.age = form.cleaned_data.get('age', None)
         person.save()
 
-        return HttpResponse("Person details updated")
+        return redirect('my_app_details')
+        # return HttpResponse("Person details updated")        
 
 
 books_content = [
